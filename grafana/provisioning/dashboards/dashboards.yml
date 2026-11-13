@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+  - name: Teaching demo
+    orgId: 1
+    folder: Teaching
+    type: file
+    disableDeletion: false
+    options:
+      path: /var/lib/grafana/dashboards
