@@ -2,19 +2,13 @@
 
 **Stack:** Java 21, Javalin, Micrometer, Prometheus, Grafana, Docker Compose.
 
-Projektet indeholder et færdigt Grafana-dashboard. Ingen React frontend og ingen database, så koden kaldes direkte via HTTP-requests, eksempelvis med `curl` eller Postman.
+Projektet indeholder et færdigt Grafana-dashboard. Ingen React frontend og ingen database, så backend kaldes direkte via HTTP-requests, eksempelvis med `curl` eller Postman.
 
-Eksempelkoden anvender **feature flags** til at aktivere og deaktivere en rabatfunktion i en webshop (se
-evt. [eksemplet med feature flags](https://github.com/Tine-m/feature-flags.git)). Feature flags er dog ikke en
-forudsætning for at arbejde med monitoring.
+Demoen anvender **feature flags** til at aktivere og deaktivere en rabatfunktion i en webshop (se
+evt. [eksemplet med feature flags](https://github.com/Tine-m/feature-flags.git)). Inklusion af feature flag i illustrerer et vigtigt DevOps-princip: Deployment er ikke afslutningen på udviklingsprocessen. Vi skal også kunne overvåge, hvordan softwaren fungerer i drift, opdage problemer og reagere på dem. Hvis målinger viser, at den nye rabatfunktion medfører mange fejl eller lange svartider, kan vi deaktivere den ved hjælp af feature flaget – **uden at skulle deploye en ny version af applikationen**.
 
-**Feature flag med rabatkode aktiveret/deaktiveret illustrerer et vigtigt DevOps-princip: Deployment er ikke afslutningen på udviklingsprocessen.** Vi skal også
-kunne overvåge, hvordan softwaren fungerer i drift, opdage problemer og reagere på dem.
-
-Hvis målingerne viser, at den nye rabatfunktion medfører mange fejl eller lange svartider, kan vi deaktivere den ved hjælp af feature flaget –
-**uden at skulle deploye en ny version af applikationen**.
-
-På den måde kan monitoring og feature flags tilsammen understøtte en mere kontrolleret og pålidelig softwarelevering.
+Demoen illustrerer hvordan monitoring og feature flags tilsammen kan understøtte en mere kontrolleret og pålidelig softwarelevering. Feature flags er dog ikke en
+forudsætning for monitoring
 
 ## 1. Start
 
@@ -31,9 +25,9 @@ Første build downloader Maven-afhængigheder og Docker-images og kan tage lidt 
 - Grafana: http://localhost:3000 (brugernavn `admin`, adgangskode `admin`)
 - Grafana-dashboard: **Dashboards → Teaching → Discount feature — Monitoring demo** (oprettes automatisk).
 
-    ## 2. Aktivér feature flag
+## 2. Afprøv endpoints
 
-Aktivér feature flag og kald endpoint med hhv. gyldig og ugyldig rabatkode.
+Aktivér feature flag og kald dicount endpoint med hhv. gyldig og ugyldig rabatkode.
 
 I Git Bash / macOS / Linux:
 
@@ -139,6 +133,6 @@ ved genstart. `rate` kræver flere datapunkter og er ustabil ved meget lidt traf
 - Se backendlogs: `docker compose logs -f app`.
 - Hvis Prometheus target er DOWN: kontrollér at appen kører, og at `http://localhost:8080/metrics` svarer. Prometheus
   bruger **`app:8080`**, ikke `localhost:8080`, internt i Docker-netværket.
-- Hvis Grafana er tom: vælg dashboardet under **Teaching**, vent på data, og tjek tidsintervallet (seneste 15 minutter). Jeg har erfaring for at man ofte behøver genstarte Grafana efter første build af hele app'en: `docker compose restart grafana`
+- Hvis Grafana er tom: vælg dashboardet under **Teaching**, vent på data, og tjek tidsintervallet (seneste 15 minutter). Ellers prøv: `docker compose restart grafana`
 - Hvis port 8080, 9090 eller 3000 allerede bruges: stop den anden service eller tilpas host-porten i `compose.yaml`.
 - Stop: `docker compose down`.
